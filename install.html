@@ -52,7 +52,7 @@ li a:hover {
     <p>Materials needed:</p>
     <p>Windows 10, Build 1703 or later</p>
     <p><a href="https://github.com/andreiw/RaspberryPiPkg/">Tiano 64-Bit UEFI Loader for RPi3 (WoA Debug buils only)</a></p>
-    <p><a href="#">MiniTool Partition Editor</a></p>
+    <p><a href="https://www.partitionwizard.com/free-partition-manager.html">MiniTool Partition Editor</a></p>
     <p><kbd>dism</kbd>, <kbd>bcdedit</kbd>, and <kbd>bcdboot</kbd></p>
     <br />
     <br />
@@ -81,8 +81,25 @@ Type of Download: Download ISO compiler in OneClick! (unZIP -> RUN creatingISO.c
 <p>There are a series of commands used to do this.</p>
 <p>First, open the Command Prompt as administrator. This is important as the commands will not work if you are using the Command Prompt as a normal user.</p>
 <p>After that, navigate the the directory that holds the file named <code>install.wim</code> and download the files located on <a href="https://github.com/andreiw/rpi3winstuff">this</a> GitHub repository.</p>
-<p>Extract the files to the same folder and copy the folder named "driver_prebuilts" that is inside the zip you just extracted. Your working folder should look something like this (I will explain "m" later):</p>
+<p>Extract the files to the same folder and copy the folder named "driver_prebuilts" that is inside the zip you just extracted. Your working folder should look something like this (I will explain "m" soon):</p>
 <img src="installation-img-1.png" alt="Working Folder">
+<p>Now that you have the drivers (the drivers are for SD and USB), we have to actually install the drivers. First, make a directory called "m" (to keep it short and simple). After that, go to the Command Prompt you just opened and type in the following case sensitive command:</p>
+<code>dism /mount-image /imagefile:install.wim /Index:1 /MountDir:m</code>
+<p>Depending on the speed of your computer and hard disk, this may take from 10 seconds to 10 minutes. Eventually, when it finishes, install the drivers with the following command:</p>
+<code>dism /image:m /add-driver /driver:driver_prebuilts /recurse /forceunsigned</code>
+<p>/forceunsigned tells dism to apply the drivers, even though they have not been signed by Microsoft (they are just homebrew, to say)</p>
+<p>This process should not take long, usualy under 30 seconds.</p>
+<p>Then, run this command to save the modifications to the install.wim file:</p>
+<code>dism /unmount-wim /mountdir:m /commit</code>
+<p>This will take a little while, 30 minutes at most, but this isn't even the longest part (of the WIM modification process) which is coming up next.</p>
+<p>When this process finishes, it's time to actually apply the image. But first, we must format your SD card properly...</p>
+
+<h2>Step 5: Formatting the SD card</h2>
+<p>First, launch MiniTool. Find your SD card (it will have a box to the side of the drive saying "SD") and delete every partition on it. Before you hit apply, be sure to back up any information you do not want to lose on it. When you have done that, hit apply.</p>
+<p>After that, right click the gray bar and press "create new partition". Chose Fat32 and make the size of the partition small, like 128MBs.</p>
+<p>Then, create another partition that is formated with NTFS and make it fill the rest of the space of the SD card. It should look something similar to this:</p>
+<img src="installation-img-2.png" alt="Partitions">
+
 
 <h1>Why didn't we just upload the WIM?</h1>
 <p>The reason why we didn't just upload the WIM to download is because that would be concidered piracy. This was the original plan but at the same time, we would rather not end the day with a lawsuit. We are sorry for any inconvenience this may cause!</p>
