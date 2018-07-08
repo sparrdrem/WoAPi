@@ -80,14 +80,14 @@ Type of Download: Download ISO compiler in OneClick! (unZIP -> RUN creatingISO.c
 <p>Here comes the hard part...</p>
 <p>There are a series of commands used to do this.</p>
 <p>First, open the Command Prompt as administrator. This is important as the commands will not work if you are using the Command Prompt as a normal user.</p>
-<p>After that, navigate the the directory that holds the file named <code>install.wim</code> and download the files located on <a href="https://github.com/andreiw/rpi3winstuff">this</a> GitHub repository.</p>
-<p>Extract the files to the same folder and copy the folder named "driver_prebuilts" that is inside the zip you just extracted. Your working folder should look something like this (I will explain "m" soon):</p>
+<p>After that, navigate the the directory that holds the file named <kbd>install.wim</kbd> and download the files located on <a href="https://github.com/andreiw/rpi3winstuff">this</a> GitHub repository.</p>
+    <p>Extract the files to the same folder and copy the folder named <kbd>driver_prebuilts</kbd> that is inside the zip you just extracted. Your working folder should look something like this (I will explain "m" soon):</p>
 <img src="installation-img-1.png" alt="Working Folder">
 <p>Now that you have the drivers (the drivers are for SD and USB), we have to actually install the drivers. First, make a directory called "m" (to keep it short and simple). After that, go to the Command Prompt you just opened and type in the following case sensitive command:</p>
 <code>dism /mount-image /imagefile:install.wim /Index:1 /MountDir:m</code>
 <p>Depending on the speed of your computer and hard disk, this may take from 10 seconds to 10 minutes. Eventually, when it finishes, install the drivers with the following command:</p>
 <code>dism /image:m /add-driver /driver:driver_prebuilts /recurse /forceunsigned</code>
-<p>/forceunsigned tells dism to apply the drivers, even though they have not been signed by Microsoft (they are just homebrew, to say)</p>
+<p>/forceunsigned tells dism to apply the drivers, even though they have not been signed by an official business.</p>
 <p>This process should not take long, usualy under 30 seconds.</p>
 <p>Then, run this command to save the modifications to the install.wim file:</p>
 <code>dism /unmount-wim /mountdir:m /commit</code>
@@ -106,7 +106,7 @@ Type of Download: Download ISO compiler in OneClick! (unZIP -> RUN creatingISO.c
 <p>Depending on the speed of your SD card writer, this may take from 20 minutes to 2 hours.</p>
 <p>First, find out which letter the NTFS partition is assigned to. This is very important as using a different letter may overwrite information on another drive!</p>
 <p>After figuring that out, use the following command to apply the WIM image to the partition:</p>
-<code>dism /apply-image /imagefile:install.wim /index:1 /applydir:[drive letter here]
+    <code>dism /apply-image /imagefile:install.wim /index:1 /applydir:[drive letter here]</code>
 <p>When this finishes, go to step 7.</p>
 
 <h2>Step 7: Copying the EFI file and making Windows 10 bootable</h2>
