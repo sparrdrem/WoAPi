@@ -99,6 +99,17 @@ Type of Download: Download ISO compiler in OneClick! (unZIP -> RUN creatingISO.c
 <p>After that, right click the gray bar and press "create new partition". Chose Fat32 and make the size of the partition small, like 128MBs.</p>
 <p>Then, create another partition that is formated with NTFS and make it fill the rest of the space of the SD card. It should look something similar to this:</p>
 <img src="installation-img-2.png" alt="Partitions">
+<p>If it does (except for the "used" part because that SD card is actually having Windows 10 installed as we type this), hit the Apply button</p>
+<p>Install the Tiano Core 64-bit which can be found <a href="https://drive.google.com/open?id=1J876koTjyc4LnJQGPL-wLqRzGW1bnSqj">here by copying the files in the DEBUG folder to the Fat32 partition.</a> This is a prebuilt version provided by the SparrOS Developer Team.</p>
+
+<h2>Step 6: Applying the image</h2>
+<p>Depending on the speed of your SD card writer, this may take from 20 minutes to 2 hours.</p>
+<p>First, find out which letter the NTFS partition is assigned to. This is very important as using a different letter may overwrite information on another drive!</p>
+<p>After figuring that out, use the following command to apply the WIM image to the partition:</p>
+<code>dism /apply-image /imagefile:install.wim /index:1 /applydir:[drive letter here]
+<p>When this finishes, go to step 7.</p>
+
+<h2>Step 7: Copying the EFI file and making Windows 10 bootable</h2>
 
 
 <h1>Why didn't we just upload the WIM?</h1>
