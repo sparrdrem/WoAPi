@@ -100,7 +100,7 @@ Type of Download: Download ISO compiler in OneClick! (unZIP -> RUN creatingISO.c
 <p>Then, create another partition that is formated with NTFS and make it fill the rest of the space of the SD card. It should look something similar to this:</p>
 <img src="installation-img-2.png" alt="Partitions">
 <p>If it does (except for the "used" part because that SD card is actually having Windows 10 installed as we type this), hit the Apply button</p>
-<p>Install the Tiano Core 64-bit which can be found <a href="https://drive.google.com/open?id=1J876koTjyc4LnJQGPL-wLqRzGW1bnSqj">here by copying the files in the DEBUG folder to the Fat32 partition.</a> This is a prebuilt version provided by the SparrOS Developer Team.</p>
+<p>Install the Tiano Core 64-bit which can be found <a href="https://github.com/andreiw/RaspberryPiPkg">here</a> by copying the files in <code>Binary\2018May13-GCC49-WoA-17125-only\DEBUG</code> to the Fat32 partition of your SD card.</p>
 
 <h2>Step 6: Applying the image</h2>
 <p>Depending on the speed of your SD card writer, this may take from 20 minutes to 2 hours.</p>
@@ -109,8 +109,25 @@ Type of Download: Download ISO compiler in OneClick! (unZIP -> RUN creatingISO.c
     <code>dism /apply-image /imagefile:install.wim /index:1 /applydir:[drive letter here]</code>
 <p>When this finishes, go to step 7.</p>
 
-<h2>Step 7: Copying the EFI file and making Windows 10 bootable</h2>
+<h2>Step 7: Copying the EFI files and making Windows 10 bootable</h2>
+<p>This is a simple and straightforward step that doesn't take long - just copy in these codes after replacing letters with appropiate ones</p>
+<code>bcdboot [Fat32 Letter]:\Windows /s [NTFS Letter]: /f UEFI</code>
+<code>bcdedit /store [Fat32 Letter]:\EFI\Microsoft\Boot\bcd /set {default} testsigning on</code>
+<code>bcdedit /store [Fat32 Letter]:\EFI\Microsoft\Boot\bcd /set {default} nointegritychecks on</code>
+<p>This makes it so your Raspberry Pi will boot into Windows and prevents Windows from doing its driver verifications it would normally do.</p>
+<p>Now, launch Notepad as admin and copy the registry file that can be found <a href="https://sourceforge.net/p/windows-10-lite/wiki/Finish%20setup%20immediately/">here</a> into it. Save it as regfile.reg on the root folder of the NTFS partition. When we use this regedit file later, it will cause Windows 10 to skip setup as we will find out later.</p>
+<p>Remove EVERY usb device from your Raspberry Pi and power it on. Removing every USB device is very important because Windows 10 will BSOD otherwise.</p>
 
+<h2>Step 8: The Error that Actually Helps Us</h2>
+<p>Eventually, Windows will present an error saying something along the lines of "Windows Setup cannot continue. Restart to restart installation." Do NOT restart it, but rather use a keystroke that is "SHIFT+F10." This will make windows load CMD.EXE.</p>
+<p>Type in "mmc" to load the Microsoft Management Console and go to File->Add/Remove Snapin. Add the Computer Management Module for the Local Computer and hit OK. There will be an error, but it doesn't even matter in any way. Go to Computer Management (Local)->Users and Groups->Users and double click the "Administrator" account. Uncheck "Account is Disabled" and click done. Close out of Microsoft Management Console.</p>
+<p>Now, in the same command prompt, go to the root of C:\ and type in:</p> 
+<code>regedit regfile.reg</code>
+<p>Accept the prompt that shows up. After that, unplug and plug back in your Raspberry Pi after removing everything from the USB ports</p>
+
+<h2>And that's about it!</h2>
+<p>After a greusomely long startup process, the Pi will boot into windows it. If explorer.exe doesn't show up, hit CTRL+ALT+DEL and go to Task Manager. Hit "More Details" and go to File->Create new Task and type in "explorer.exe." Check the "create with administrator privilages" and hit ok. Explorer.exe will launch.</p>
+<p>Have fun messing around with Windows 10 on Pi!</p>
 
 <h1>Why didn't we just upload the WIM?</h1>
 <p>The reason why we didn't just upload the WIM to download is because that would be concidered piracy. This was the original plan but at the same time, we would rather not end the day with a lawsuit. We are sorry for any inconvenience this may cause!</p>
