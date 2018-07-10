@@ -106,7 +106,7 @@ Type of Download: Download ISO compiler in OneClick! (unZIP -> RUN creatingISO.c
 <p>Depending on the speed of your SD card writer, this may take from 20 minutes to 2 hours.</p>
 <p>First, find out which letter the NTFS partition is assigned to. This is very important as using a different letter may overwrite information on another drive!</p>
 <p>After figuring that out, use the following command to apply the WIM image to the partition:</p>
-    <code>dism /apply-image /imagefile:install.wim /index:1 /applydir:[drive letter here]</code>
+    <code>dism /apply-image /imagefile:install.wim /index:1 /applydir:[NTFS drive letter here]</code>
 <p>When this finishes, go to step 7.</p>
 
 <h2>Step 7: Copying the EFI files and making Windows 10 bootable</h2>
