@@ -112,7 +112,7 @@ Type of Download: Download ISO compiler in OneClick! (unZIP -> RUN creatingISO.c
 
 <h2>Step 7: Copying the EFI files and making Windows 10 bootable</h2>
 <p>This is a simple and straightforward step that doesn't take long - just copy in these codes after replacing letters with appropiate ones</p>
-<code>bcdboot [Fat32 Letter]:\Windows /s [NTFS Letter]: /f UEFI</code>
+<code>bcdboot [NTFS Letter]:\Windows /s [Fat32 Letter]: /f UEFI</code>
 <code>bcdedit /store [Fat32 Letter]:\EFI\Microsoft\Boot\bcd /set {default} testsigning on</code>
 <code>bcdedit /store [Fat32 Letter]:\EFI\Microsoft\Boot\bcd /set {default} nointegritychecks on</code>
 <p>This makes it so your Raspberry Pi will boot into Windows and prevents Windows from doing its driver verifications it would normally do.</p>
